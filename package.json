@@ -1,0 +1,26 @@
+{
+  "name": "express-base",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hectorv72/express-base.git"
+  },
+  "author": "Hector",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hectorv72/express-base/issues"
+  },
+  "homepage": "https://github.com/Hectorv72/express-base#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongose": "^0.0.2-security",
+    "morgan": "^1.10.0"
+  }
+}
