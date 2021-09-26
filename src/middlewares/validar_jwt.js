@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const {response, request} = require('express');
 const { Users } = require('../models/user.models')
 
-const validar_jwt = (requ = request, res = response, next) => {
+const validar_jwt = (req = request, res = response, next) => {
     
-    const token = requ.header('x-token');
+    const token = req.header('x-token');
 
     // Verificar existencia del token
     if(!token){
@@ -25,7 +25,7 @@ const validar_jwt = (requ = request, res = response, next) => {
         }
 
         // verificar existencia del id en la base de datos
-        const user = Users.find( element => element.id === id  );
+        const user = Users.find( user => user.id === id  );
 
         // valida el usuario
         if(!user){

@@ -1,9 +1,8 @@
 const express = require('express');
-const app = express();
 const morgan = require("morgan");
 require("dotenv").config();
+require('./dbconection');
 
-// require("./connection");
 const app = express();
 
 // Middlewares
@@ -15,6 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 app.set('port', process.env.PORT || 4000);
 
 // Routes
-// app.use(require("./routes/user.routes"));
+app.use('/user', require("./src/routes/user.routes"));
 
 app.listen(app.get('port'), () => console.log(`Example app listening on port port!`));

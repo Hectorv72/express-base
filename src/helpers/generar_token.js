@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const generar_jwt = (id = '') => {
-    return new Promise = (resolve,reject) => {
+    return new Promise((resolve,reject) => {
         const payload = { id }
 
         jwt.sign(payload, process.env.SECRET, (err,token) => {
@@ -10,7 +10,7 @@ const generar_jwt = (id = '') => {
             }
             resolve(token);
         });
-    }
+    })
 }
 
 module.exports = {generar_jwt}
