@@ -4,16 +4,17 @@ const controller = {}
 
 controller.loginUser = async (req,res) =>{
 
-    const {user, password} = req.body;
-    const log_user = User.find({user,password});
+    const {email, password} = req.body;
+    const user = await User.findOne({email,password});
+    console.log(user)
 
-    if(!log_user){
+    if(!user){
         res.status(401).json({
             msg: 'el usuario no existe'
         });
     }else{
 
-        const { id } = log_user;
+        const { id } = user;
     
         const token = await generar_jwt(id);
     

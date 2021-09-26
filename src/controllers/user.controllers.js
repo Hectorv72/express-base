@@ -26,9 +26,9 @@ controller.getUser = async (req,res) => {
 
 
 controller.createUser = async (req,res) => {
-    const { email, username, password } = req.body;
+    const { email, username, password, rol } = req.body;
 
-    const user = new User({ email, username, password });
+    const user = new User({ email, username, password, rol });
     await user.save();
 
     res.json({
@@ -41,7 +41,7 @@ controller.createUser = async (req,res) => {
 controller.updateUser = async (req,res) => {
 
     const { id } = req.params;
-    const { email, username, password, active } = req.body;
+    const { email, username, active } = req.body;
     const update = {}
 
     if(username){
@@ -55,10 +55,6 @@ controller.updateUser = async (req,res) => {
     if(active){
         update.active = active;
     }
-
-    // if(password){
-    //     update.password = password;
-    // }
 
     if(update.username || update.email || update.active){
         
