@@ -15,5 +15,7 @@ app.set('port', process.env.PORT || 4000);
 
 // Routes
 app.use('/user', require("./src/routes/user.routes"));
+app.use('/api', require("./src/routes/api.routes"));
+app.use('/rol', require("./src/routes/rol.routes"));
 
 app.listen(app.get('port'), () => console.log(`Example app listening on port port!`));

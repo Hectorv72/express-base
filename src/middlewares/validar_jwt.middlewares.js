@@ -9,7 +9,7 @@ const validar_jwt = async (req = request, res = response, next) => {
     // Verificar existencia del token
     if(!token){
         return res.status(401).json({
-            msg: 'no existe el token'
+            msg: 'Error de autenticacion' //'No existe el token'
         })
     }
 
@@ -20,7 +20,7 @@ const validar_jwt = async (req = request, res = response, next) => {
 
         if(!id){
            return res.status(401).json({
-            msg: 'no existe el id'
+            msg: 'No existe el id'
            });
         }
 
@@ -31,13 +31,11 @@ const validar_jwt = async (req = request, res = response, next) => {
         // valida el usuario
         if(!user){
             return res.status(401).json({
-                msg: 'no existe el usuario'
+                msg: 'No existe el usuario'
             })
         }
 
         req.user = user;
-        console.log(user)
-        console.log(user.rol)
 
         next();
 
