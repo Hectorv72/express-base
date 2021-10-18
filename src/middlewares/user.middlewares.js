@@ -10,6 +10,7 @@ const { getRoles } = require('../helpers/get_roles');
 
 // functions
 
+// devolver al usuario los erroreres tirados por express-validator
 const showErrors = (req, res,next) => {
     const errors = validationResult(req);
     const listerrors = errors.array().map( error => error.msg);
@@ -32,6 +33,8 @@ const verifyEmailExistence = async (req, res, next) => {
     next();
 }
 
+
+// Verifica que la contraseña pasada por el usuario corresponda con el usuario de la bd
 const verifyPasswordInUser = async (req, res, next) => {
     let { password, newpassword } = req.body;
     const { id } = req.params;
@@ -63,6 +66,7 @@ const verifyPasswordInUser = async (req, res, next) => {
     })
 }
 
+// Valida que el usuario que realiza una peticion sea un usuario activo
 const verificarActivo = (req, res, next) => {
     
     const { active } = req.user;
@@ -75,6 +79,7 @@ const verificarActivo = (req, res, next) => {
     next();
 }
 
+// Verifica que el rol se encuentre en los roles de la base de datos
 const verifyInRoles = async (req, res, next) => {
 
     const { rol } = req.body;

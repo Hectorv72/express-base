@@ -1,6 +1,9 @@
 const { body } = require('express-validator');
 const { showErrors, verifyEmailExistence, verifyPasswordInUser, verifyInRoles } = require('./user.middlewares');
 
+// Middlewares que se importaran en las rutas de usuario
+
+// Lista de middlewares para el post del usuario
 const form_post_middlewares = [
     body('email'   , 'El email ingresado no contiene un formato correcto').isEmail(),
     body('username', 'El formato del usuario no corresponde').isLength({min:8}),
@@ -12,6 +15,7 @@ const form_post_middlewares = [
 ];
 
 
+// Lista de middlewares para el update del usuario
 const form_update_middlewares = [
     body('email', 'El email ingresado no contiene un formato correcto').if(body('email').not().isEmpty())
         .isEmail(),
@@ -29,6 +33,7 @@ const form_update_middlewares = [
     verifyEmailExistence,
 ];
 
+// Lista de middlewares para la actualizacion de la constraseña del usuario
 const form_password_middlewares = [
     body('password', 'La contaseña debe contener min 8 caracteres').isLength({min:8}),
     body('newpassword', 'La contaseña debe contener min 8 caracteres').isLength({min:8}),
