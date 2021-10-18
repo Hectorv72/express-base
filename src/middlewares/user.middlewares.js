@@ -1,95 +1,95 @@
-const { validationResult  } = require('express-validator');
-const bcryptjs = require('bcryptjs');
+const { validationResult } = require("express-validator");
+const bcryptjs = require("bcryptjs");
 
 // model
-const User = require('../models/user.models');
+const User = require("../models/user.models");
 
 // helper
-const { getRoles } = require('../helpers/get_roles');
-
+const { getRoles } = require("../helpers/get_roles");
 
 // functions
 
 // devolver al usuario los erroreres tirados por express-validator
-const showErrors = (req, res,next) => {
-    const errors = validationResult(req);
-    const listerrors = errors.array().map( error => error.msg);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: listerrors });
-    }
-    next();
-}
+const showErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  const listerrors = errors.array().map((error) => error.msg);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: listerrors });
+  }
+  next();
+};
 
 const verifyEmailExistence = async (req, res, next) => {
-    const {email} = req.body;
-    const user = await User.findOne({ email })
+  const { email } = req.body;
+  const user = await User.findOne({ email });
 
-    if(user){
-        return res.json({
-            msg: 'Ya existe un usuario con ese email'
-        })
-    }
+  if (user) {
+    return res.json({
+      msg: "Ya existe un usuario con ese email",
+    });
+  }
 
-    next();
-}
-
+  next();
+};
 
 // Verifica que la contraseña pasada por el usuario corresponda con el usuario de la bd
 const verifyPasswordInUser = async (req, res, next) => {
-    let { password, newpassword } = req.body;
-    const { id } = req.params;
-    
-    const user = await User.findOne({id});
-    
-    if(user){
+  let { password, newpassword } = req.body;
+  const { id } = req.params;
 
-        const salt = bcryptjs.genSaltSync();
-    
-        password = bcryptjs.hashSync(password, salt);
-        console.log(password);
-        console.log(user.password);
+  const user = await User.findOne({ id });
 
-        if( password === user.password ){
+  if (user) {
+    const salt = bcryptjs.genSaltSync();
 
-            password = bcryptjs.hashSync(newpassword, salt);
+    password = bcryptjs.hashSync(password, salt);
+    console.log(password);
+    console.log(user.password);
 
-            await User.findByIdAndUpdate(id, { password }, { new: true});
+    if (password === user.password) {
+      password = bcryptjs.hashSync(newpassword, salt);
 
-            return res.json({
-                msg: 'La contraseña se ah actualizado'  
-            });
-        }
+      await User.findByIdAndUpdate(id, { password }, { new: true });
+
+      return res.json({
+        msg: "La contraseña se ah actualizado",
+      });
     }
+  }
 
-    return res.json({
-        msg: 'Ocurrio un error por favor vuelva a intentarlo mas tarde'
-    })
-}
+  return res.json({
+    msg: "Ocurrio un error por favor vuelva a intentarlo mas tarde",
+  });
+};
 
 // Valida que el usuario que realiza una peticion sea un usuario activo
 const verificarActivo = (req, res, next) => {
-    
-    const { active } = req.user;
+  const { active } = req.user;
 
-    if(!active){
-        return res.json({ 
-            msg: 'No tiene acceso porque usted no existe en el sistema'
-        })
-    }
-    next();
-}
+  if (!active) {
+    return res.json({
+      msg: "No tiene acceso porque usted no existe en el sistema",
+    });
+  }
+  next();
+};
 
 // Verifica que el rol se encuentre en los roles de la base de datos
 const verifyInRoles = async (req, res, next) => {
+  const { rol } = req.body;
+  const roles = await getRoles();
 
-    const { rol } = req.body;
-    const roles = await getRoles();
+  if (!roles.includes(rol)) {
+    return res.json({ msg: "El rol debe ser uno existente" });
+  }
 
-    if(!roles.includes(rol)){
-        return res.json({ msg: 'El rol debe ser uno existente' });
-    }
+  next();
+};
 
-    next();
-}
-
-module.exports = { showErrors, verifyEmailExistence, verifyInRoles, verifyPasswordInUser, verificarActivo }
+module.exports = {
+  showErrors,
+  verifyEmailExistence,
+  verifyInRoles,
+  verifyPasswordInUser,
+  verificarActivo,
+};
